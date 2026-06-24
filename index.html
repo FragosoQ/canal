@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a3d3a">
+<title>Festival dos Canais 2026 · Aveiro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0c1f1d; --paper:#f3f1e9; --paper-2:#eae6d8;
+    --teal-900:#072e2b; --teal-800:#0a3d3a; --teal-700:#0d4f4a;
+    --water:#1fb6a6; --water-soft:#7fd6cb;
+    --amber:#f2a900; --coral:#ff6b5e;
+    --line:rgba(12,31,29,.12);
+    --card:#ffffff;
+    --shadow:0 1px 2px rgba(7,46,43,.06),0 8px 24px rgba(7,46,43,.07);
+    /* category colors */
+    --c-musica:#ff6b5e; --c-circo:#f2a900; --c-danca:#7b5cff;
+    --c-teatro:#1fb6a6; --c-multi:#3a8dde; --c-oficina:#5fae3a; --c-inst:#d4569b;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:"Inter",system-ui,-apple-system,sans-serif;
+    background:var(--paper); color:var(--ink);
+    -webkit-font-smoothing:antialiased; line-height:1.45;
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+  a{color:inherit}
+
+  /* ---------- Header ---------- */
+  header{
+    position:relative; overflow:hidden;
+    background:linear-gradient(160deg,var(--teal-800) 0%,var(--teal-900) 70%);
+    color:var(--paper); padding:26px 18px 16px;
+    padding-top:calc(26px + env(safe-area-inset-top));
+    display:flex; align-items:center; gap:18px; flex-wrap:wrap;
+  }
+  .head-text{flex:1 1 240px; min-width:0; position:relative; z-index:2}
+  .head-art{
+    flex:0 0 auto; width:clamp(108px,30.6vw,189px); height:auto;
+    object-fit:contain; margin-left:auto; position:relative; z-index:2;
+    filter:drop-shadow(0 6px 18px rgba(0,0,0,.25));
+  }
+  @media(max-width:560px){
+    header{padding-bottom:18px}
+    .head-art{width:min(54vw,198px); margin:6px auto 0; order:3}
+  }
+  header .wave{
+    position:absolute; left:0; right:0; bottom:-1px; height:34px; display:block;
+    color:var(--paper);
+  }
+  .eyebrow{
+    font-size:11px; letter-spacing:.28em; text-transform:uppercase;
+    color:var(--water-soft); font-weight:600; margin:0 0 6px;
+  }
+  h1{
+    font-family:"Fraunces",Georgia,serif; font-weight:900;
+    font-size:clamp(30px,8vw,46px); line-height:.96; margin:0;
+    letter-spacing:-.01em;
+  }
+  h1 .em{color:var(--amber); font-style:italic}
+  .sub{margin:10px 0 0; color:#cfe9e4; font-size:13.5px; max-width:34ch}
+
+  /* ---------- Sticky controls ---------- */
+  .controls{
+    position:sticky; top:0; z-index:20;
+    background:rgba(243,241,233,.92); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .days{
+    display:flex; gap:6px; overflow-x:auto; padding:10px 14px;
+    scrollbar-width:none;
+  }
+  .days::-webkit-scrollbar{display:none}
+  .day{
+    flex:0 0 auto; border:1px solid var(--line); background:var(--card);
+    border-radius:14px; padding:7px 13px; cursor:pointer; text-align:center;
+    min-width:58px; transition:.16s ease; line-height:1.15;
+  }
+  .day b{display:block; font-family:"Fraunces",serif; font-size:19px; font-weight:600}
+  .day span{font-size:10px; text-transform:uppercase; letter-spacing:.08em; opacity:.6}
+  .day.active{background:var(--teal-800); color:var(--paper); border-color:var(--teal-800)}
+  .day.active span{opacity:.85}
+  .day.today{box-shadow:inset 0 0 0 2px var(--amber)}
+
+  .toolbar{display:flex; gap:8px; padding:0 14px 10px; align-items:center}
+  .search{
+    flex:1; display:flex; align-items:center; gap:8px;
+    background:var(--card); border:1px solid var(--line);
+    border-radius:12px; padding:8px 11px;
+  }
+  .search input{
+    border:0; outline:0; background:transparent; width:100%;
+    font:inherit; font-size:14px; color:var(--ink);
+  }
+  .search svg{flex:0 0 auto; opacity:.5}
+  .favbtn{
+    flex:0 0 auto; background:var(--card); border:1px solid var(--line);
+    border-radius:12px; padding:8px 11px; cursor:pointer; font:inherit;
+    font-size:13px; font-weight:600; display:flex; gap:6px; align-items:center;
+    color:var(--ink); transition:.16s;
+  }
+  .favbtn.on{background:var(--coral); color:#fff; border-color:var(--coral)}
+
+  .chips{display:flex; gap:6px; overflow-x:auto; padding:0 14px 11px; scrollbar-width:none}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{
+    flex:0 0 auto; border:1px solid var(--line); background:var(--card);
+    border-radius:999px; padding:5px 12px; font-size:12.5px; font-weight:600;
+    cursor:pointer; white-space:nowrap; transition:.16s; color:var(--ink);
+    display:flex; align-items:center; gap:6px;
+  }
+  .chip .dot{width:8px; height:8px; border-radius:50%}
+  .chip.active{background:var(--ink); color:var(--paper); border-color:var(--ink)}
+
+  /* ---------- List / timeline ---------- */
+  main{padding:16px 14px 40px; max-width:680px; margin:0 auto}
+  .daytitle{
+    font-family:"Fraunces",serif; font-weight:600; font-size:15px;
+    margin:4px 2px 14px; color:var(--teal-700); display:flex;
+    align-items:baseline; gap:8px;
+  }
+  .daytitle .count{font-family:"Inter",sans-serif; font-size:12px; font-weight:600; color:#8a948f}
+
+  .timeline{position:relative; padding-left:60px}
+  .timeline::before{
+    content:""; position:absolute; left:43px; top:6px; bottom:6px;
+    width:2px; background:linear-gradient(var(--water-soft),var(--line));
+  }
+  .ev{position:relative; margin:0 0 14px; animation:rise .4s ease both}
+  @keyframes rise{from{opacity:0; transform:translateY(8px)}to{opacity:1; transform:none}}
+  .ev .time{
+    position:absolute; left:-60px; top:2px; width:44px; text-align:right;
+    font-variant-numeric:tabular-nums; font-weight:700; font-size:13px; color:var(--teal-700);
+  }
+  .ev .time small{display:block; font-weight:500; font-size:10.5px; color:#9aa39e; margin-top:1px}
+  .ev .node{
+    position:absolute; left:-23px; top:5px; width:14px; height:14px; border-radius:50%;
+    background:var(--card); border:3px solid var(--water); z-index:2;
+  }
+  .card{
+    background:var(--card); border:1px solid var(--line); border-left-width:4px;
+    border-radius:14px; padding:12px 14px; box-shadow:var(--shadow);
+  }
+  .card .top{display:flex; justify-content:space-between; gap:10px; align-items:flex-start}
+  .title{font-family:"Fraunces",serif; font-weight:600; font-size:16.5px; line-height:1.2; margin:0}
+  .flag{font-size:11px; font-weight:700; color:#fff; background:var(--ink); border-radius:6px;
+    padding:1px 6px; margin-left:6px; vertical-align:2px; letter-spacing:.04em}
+  .group{font-size:13px; color:#5d6964; margin:3px 0 0}
+  .meta{display:flex; flex-wrap:wrap; gap:10px 14px; margin-top:9px; align-items:center}
+  .cat{font-size:11.5px; font-weight:700; letter-spacing:.02em}
+  .venue{font-size:12.5px; color:#5d6964; display:inline-flex; align-items:center; gap:5px; text-decoration:none}
+  .venue:hover{color:var(--teal-700); text-decoration:underline}
+  .venue svg{opacity:.6}
+  .star{
+    margin-left:auto; cursor:pointer; border:0; background:transparent; padding:4px;
+    color:var(--line); transition:.15s; line-height:0;
+  }
+  .star svg{width:21px; height:21px}
+  .star.on{color:var(--coral)}
+  .star.on svg{fill:var(--coral)}
+  .badge-now{
+    font-size:10.5px; font-weight:800; color:#fff; background:var(--coral);
+    border-radius:6px; padding:2px 7px; letter-spacing:.05em;
+    animation:pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse{50%{opacity:.55}}
+  .ev.is-now .node{border-color:var(--coral); box-shadow:0 0 0 4px rgba(255,107,94,.2)}
+
+  .empty{text-align:center; color:#8a948f; padding:50px 20px; font-size:14px}
+  .empty b{display:block; font-family:"Fraunces",serif; font-size:18px; color:var(--teal-700); margin-bottom:6px}
+
+  footer{
+    text-align:center; font-size:11.5px; color:#8a948f; padding:24px 18px 30px;
+    border-top:1px solid var(--line); margin-top:10px;
+  }
+  footer a{color:var(--teal-700); font-weight:600; text-decoration:none}
+  footer .credit{
+    margin-top:10px; font-family:"Fraunces",serif; font-size:13px;
+    font-weight:600; color:var(--teal-700); letter-spacing:.01em;
+  }
+
+  /* ---------- Detail sheet ---------- */
+  .card.tappable{cursor:pointer; transition:transform .12s ease, box-shadow .12s ease}
+  .card.tappable:hover{transform:translateY(-1px); box-shadow:0 2px 4px rgba(7,46,43,.08),0 12px 28px rgba(7,46,43,.1)}
+  .card.tappable:active{transform:translateY(0)}
+  .has-desc .title::after{
+    content:"›"; color:var(--water); font-weight:700; margin-left:6px;
+    font-family:"Inter",sans-serif; opacity:.7;
+  }
+  .sheet-backdrop{
+    position:fixed; inset:0; background:rgba(7,46,43,.5);
+    backdrop-filter:blur(3px); z-index:40; animation:fade .2s ease;
+  }
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .sheet{
+    position:fixed; left:0; right:0; bottom:0; z-index:50;
+    background:var(--paper); border-radius:22px 22px 0 0;
+    max-width:680px; margin:0 auto; max-height:86vh; overflow-y:auto;
+    padding:22px 20px calc(28px + env(safe-area-inset-bottom));
+    box-shadow:0 -8px 40px rgba(7,46,43,.25); animation:slideup .26s cubic-bezier(.2,.8,.2,1);
+  }
+  @keyframes slideup{from{transform:translateY(100%)}to{transform:none}}
+  .sheet::before{
+    content:""; position:absolute; top:9px; left:50%; transform:translateX(-50%);
+    width:40px; height:4px; border-radius:2px; background:var(--line);
+  }
+  .sheet-close{
+    position:absolute; top:14px; right:14px; width:32px; height:32px;
+    border:0; border-radius:50%; background:var(--paper-2); color:var(--ink);
+    font-size:22px; line-height:1; cursor:pointer;
+  }
+  .sheet .s-cat{font-size:11.5px; font-weight:700; letter-spacing:.02em; margin:6px 0 4px}
+  .sheet h2{font-family:"Fraunces",serif; font-weight:600; font-size:23px; line-height:1.15; margin:0 0 2px}
+  .sheet .s-group{font-size:14px; color:#5d6964; margin:0 0 14px}
+  .sheet .s-row{display:flex; gap:10px; align-items:flex-start; font-size:14px; margin:8px 0; color:var(--ink)}
+  .sheet .s-row svg{flex:0 0 auto; margin-top:2px; color:var(--teal-700)}
+  .sheet .s-row a{color:var(--teal-700); font-weight:600; text-decoration:none}
+  .sheet .s-desc{font-size:15px; line-height:1.6; color:#33433f; margin:14px 0 18px}
+  .sheet .s-actions{display:flex; gap:10px; flex-wrap:wrap}
+  .sheet .s-btn{
+    flex:1 1 auto; text-align:center; border:1px solid var(--line); background:var(--card);
+    border-radius:12px; padding:11px 14px; font:inherit; font-size:14px; font-weight:600;
+    cursor:pointer; color:var(--ink); text-decoration:none; display:inline-flex;
+    gap:7px; align-items:center; justify-content:center;
+  }
+  .sheet .s-btn.primary{background:var(--teal-800); color:var(--paper); border-color:var(--teal-800)}
+  .sheet .s-btn.fav.on{background:var(--coral); color:#fff; border-color:var(--coral)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="head-text">
+    <p class="eyebrow">Aveiro · 15–19 julho 2026</p>
+    <h1>Festival<br>dos <span class="em">Canais</span></h1>
+    <p class="sub">Programa completo, ao teu lado. Toca num local para abrir o mapa, marca os teus favoritos com a estrela.</p>
+  </div>
+  <img class="head-art" alt=""
+       src="https://www.cm-aveiro.pt/cmaveiro/uploads/page/image1/1284/ilustrac_oo_aes_v04_08.png"
+       onerror="this.style.display='none'">
+  <svg class="wave" viewBox="0 0 1200 34" preserveAspectRatio="none"><path d="M0,18 C150,34 300,2 450,16 C600,30 750,4 900,16 C1050,28 1150,14 1200,18 L1200,34 L0,34 Z" fill="currentColor"/></svg>
+</header>
+
+<div class="controls">
+  <div class="days" id="days"></div>
+  <div class="toolbar">
+    <label class="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="search" type="search" placeholder="Procurar espetáculo, artista, local…" autocomplete="off">
+    </label>
+    <button class="favbtn" id="favbtn" aria-pressed="false">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6L12 2l2.9 6.6 7.1.6-5.4 4.8 1.6 7z"/></svg>
+      Favoritos
+    </button>
+  </div>
+  <div class="chips" id="chips"></div>
+</div>
+
+<main>
+  <div class="daytitle" id="daytitle"></div>
+  <div id="list"></div>
+</main>
+
+<footer>
+  Dados do <a href="https://festivaldoscanais.pt/" target="_blank" rel="noopener">festivaldoscanais.pt</a> · App não oficial · Horários sujeitos a alteração
+  <div class="credit">made by @fragoso</div>
+</footer>
+
+<div class="sheet-backdrop" id="backdrop" hidden></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" hidden>
+  <button class="sheet-close" id="sheetClose" aria-label="Fechar">&times;</button>
+  <div class="sheet-body" id="sheetBody"></div>
+</div>
+
+<script>
+const CATS = {
+  "Música":            {key:"musica", color:"var(--c-musica)"},
+  "Circo Contemporâneo":{key:"circo",  color:"var(--c-circo)"},
+  "Dança":             {key:"danca",  color:"var(--c-danca)"},
+  "Teatro de Rua":     {key:"teatro", color:"var(--c-teatro)"},
+  "Multidisciplinar":  {key:"multi",  color:"var(--c-multi)"},
+  "Oficina":           {key:"oficina",color:"var(--c-oficina)"},
+  "Instalação / Performance":{key:"inst",color:"var(--c-inst)"}
+};
+const catColor = c => (CATS[c]||{}).color || "var(--ink)";
+
+const DAYS = [
+  {d:15, dow:"Qua", iso:"2026-07-15", label:"Quarta-feira, 15 de julho"},
+  {d:16, dow:"Qui", iso:"2026-07-16", label:"Quinta-feira, 16 de julho"},
+  {d:17, dow:"Sex", iso:"2026-07-17", label:"Sexta-feira, 17 de julho"},
+  {d:18, dow:"Sáb", iso:"2026-07-18", label:"Sábado, 18 de julho"},
+  {d:19, dow:"Dom", iso:"2026-07-19", label:"Domingo, 19 de julho"},
+];
+
+// h = início, e = fim ("" se não indicado). hl = destaque (palcos principais)
+const EV = [
+/* ---- 15 ---- */
+{day:15,h:"10:00",e:"19:00",t:"Casa dos Seres da Terra",g:"Maria Matina · Jardim das Brincadeiras",c:"BR",cat:"Multidisciplinar",v:"Baixa de Santo António"},
+{day:15,h:"10:00",e:"18:30",t:"Lilliput – Fairy Tales",g:"Tomb Creatius e Carles Porta",c:"ES",cat:"Multidisciplinar",v:"Baixa de Santo António"},
+{day:15,h:"15:00",e:"00:00",t:"Sala de eStar",g:"",c:"",cat:"Multidisciplinar",v:"Praça da República"},
+{day:15,h:"16:00",e:"17:00",t:"Histórias de um Baú",g:"Trotamundos Circo",c:"AR",cat:"Circo Contemporâneo",v:"Escadaria Atlas"},
+{day:15,h:"17:00",e:"18:00",t:"Bonded",g:"Alleyne Dance",c:"UK",cat:"Dança",v:"Praça Marquês de Pombal"},
+{day:15,h:"17:00",e:"",t:"Tropicália",g:"",c:"",cat:"Multidisciplinar",v:"Jardim do Museu Santa Joana"},
+{day:15,h:"18:30",e:"19:30",t:"Fanfarra dos Canais",g:"Oficina de Música de Aveiro e Comunidade",c:"PT",cat:"Música",v:"Cidade de Aveiro"},
+{day:15,h:"19:00",e:"20:00",t:"Bonded",g:"Alleyne Dance",c:"UK",cat:"Dança",v:"Praça Marquês de Pombal"},
+{day:15,h:"19:30",e:"20:30",t:"Le Bruit com Convidados",g:"",c:"PT",cat:"Música",v:"Fábrica Ciência Viva de Aveiro (exterior)"},
+{day:15,h:"21:00",e:"22:00",t:"Liberdade Liberdade",g:"Diogo Freitas",c:"PT",cat:"Circo Contemporâneo",v:"Largo do Alboi"},
+{day:15,h:"22:00",e:"23:30",t:"The Gift",g:"",c:"PT",cat:"Música",v:"Cais da Fonte Nova",hl:1},
+/* ---- 16 ---- */
+{day:16,h:"10:00",e:"19:00",t:"Casa dos Seres da Terra",g:"Maria Matina · Jardim das Brincadeiras",c:"BR",cat:"Multidisciplinar",v:"Baixa de Santo António"},
+{day:16,h:"10:00",e:"18:30",t:"Lilliput – Fairy Tales",g:"Tomb Creatius e Carles Porta",c:"ES",cat:"Multidisciplinar",v:"Baixa de Santo António"},
+{day:16,h:"11:00",e:"14:30",t:"Artilusio",g:"Markeliñe · Jardim das Brincadeiras",c:"ES",cat:"Teatro de Rua",v:"Baixa de Santo António"},
+{day:16,h:"14:30",e:"15:30",t:"Artilusio",g:"Markeliñe · Jardim das Brincadeiras",c:"ES",cat:"Teatro de Rua",v:"Baixa de Santo António"},
+{day:16,h:"15:00",e:"16:00",t:"Histórias de um Baú",g:"Trotamundos Circo",c:"AR",cat:"Circo Contemporâneo",v:"Escadaria Atlas"},
+{day:16,h:"15:00",e:"00:00",t:"Sala de eStar",g:"",c:"",cat:"Multidisciplinar",v:"Praça da República"},
+{day:16,h:"16:00",e:"17:00",t:"Bonded",g:"Alleyne Dance",c:"UK",cat:"Dança",v:"Praça Marquês de Pombal"},
+{day:16,h:"17:00",e:"",t:"Tropicália",g:"",c:"",cat:"Multidisciplinar",v:"Jardim do Museu Santa Joana"},
+{day:16,h:"18:30",e:"19:30",t:"Fanfarra dos Canais",g:"Oficina de Música de Aveiro e Comunidade",c:"PT",cat:"Música",v:"Cidade de Aveiro"},
+{day:16,h:"19:00",e:"20:00",t:"Bonded",g:"Alleyne Dance",c:"UK",cat:"Dança",v:"Praça Marquês de Pombal"},
+{day:16,h:"19:30",e:"20:30",t:"Mães Solteiras",g:"",c:"PT",cat:"Música",v:"Fábrica Ciência Viva de Aveiro (exterior)"},
+{day:16,h:"21:00",e:"22:00",t:"Liberdade Liberdade",g:"Diogo Freitas",c:"PT",cat:"Circo Contemporâneo",v:"Largo do Alboi"},
+{day:16,h:"22:00",e:"23:30",t:"Amália na América, Além do Fado",g:"Orquestra das Beiras com Cristina Branco, Raquel Tavares e Ricardo Ribeiro",c:"PT",cat:"Música",v:"Cais da Fonte Nova",hl:1},
+/* ---- 17 ---- */
+{day:17,h:"10:00",e:"18:30",t:"Lilliput – Fairy Tales",g:"Tomb Creatius e Carles Porta",c:"ES",cat:"Multidisciplinar",v:"Baixa de Santo António"},
+{day:17,h:"10:00",e:"19:00",t:"Casa dos Seres da Terra",g:"Maria Matina · Jardim das Brincadeiras",c:"BR",cat:"Multidisciplinar",v:"Baixa de Santo António"},
+{day:17,h:"11:00",e:"14:30",t:"Artilusio",g:"Markeliñe · Jardim das Brincadeiras",c:"ES",cat:"Teatro de Rua",v:"Baixa de Santo António"},
+{day:17,h:"12:00",e:"23:30",t:"Chefs on Fire",g:"",c:"",cat:"Multidisciplinar",v:"Parque Infante Dom Pedro"},
+{day:17,h:"14:30",e:"15:30",t:"Artilusio",g:"Markeliñe · Jardim das Brincadeiras",c:"ES",cat:"Teatro de Rua",v:"Baixa de Santo António"},
+{day:17,h:"15:00",e:"16:00",t:"Karoli, o Homem da Roda",g:"Ramon Muñoz",c:"ES",cat:"Circo Contemporâneo",v:"Largo Dr. Jaime Magalhães Lima"},
+{day:17,h:"15:00",e:"00:00",t:"Sala de eStar",g:"",c:"",cat:"Multidisciplinar",v:"Praça da República"},
+{day:17,h:"16:00",e:"18:00",t:"Why Not?",g:"Piero Ricciardi",c:"IT",cat:"Circo Contemporâneo",v:"Cais dos Botirões"},
+{day:17,h:"16:30",e:"17:30",t:"Into Thin Air",g:"Panama Pictures",c:"NL",cat:"Multidisciplinar",v:"Largo do Alboi"},
+{day:17,h:"17:00",e:"",t:"Tropicália",g:"",c:"",cat:"Multidisciplinar",v:"Jardim do Museu Santa Joana"},
+{day:17,h:"17:30",e:"18:30",t:"Truth",g:"Ramshacklicious & Hijinx Theatre",c:"UK",cat:"Multidisciplinar",v:"Praça Dr. Joaquim Melo Freitas"},
+{day:17,h:"18:00",e:"19:00",t:"Why Not?",g:"Piero Ricciardi",c:"IT",cat:"Circo Contemporâneo",v:"Cais dos Botirões"},
+{day:17,h:"18:30",e:"19:30",t:"Fanfarra dos Canais",g:"Oficina de Música de Aveiro e Comunidade",c:"PT",cat:"Música",v:"Cidade de Aveiro"},
+{day:17,h:"19:00",e:"20:00",t:"Truth",g:"Ramshacklicious & Hijinx Theatre",c:"UK",cat:"Multidisciplinar",v:"Praça Dr. Joaquim Melo Freitas"},
+{day:17,h:"19:30",e:"20:30",t:"Rapaz Ego",g:"",c:"PT",cat:"Música",v:"Fábrica Ciência Viva de Aveiro (exterior)"},
+{day:17,h:"19:45",e:"20:45",t:"Gaïa",g:"Compagnie Bivouac",c:"FR",cat:"Circo Contemporâneo",v:"Largo Mercado Manuel Firmino"},
+{day:17,h:"21:00",e:"22:00",t:"Eirenê",g:"La Troupe Malabó",c:"ES",cat:"Circo Contemporâneo",v:"Largo de São Gonçalinho"},
+{day:17,h:"22:00",e:"23:00",t:"Veles e Vents",g:"Xarxa Teatre",c:"ES",cat:"Multidisciplinar",v:"Praça Marquês de Pombal",hl:1},
+/* ---- 18 ---- */
+{day:18,h:"10:00",e:"18:30",t:"Lilliput – Fairy Tales",g:"Tomb Creatius e Carles Porta",c:"ES",cat:"Multidisciplinar",v:"Baixa de Santo António"},
+{day:18,h:"10:00",e:"19:00",t:"Casa dos Seres da Terra",g:"Maria Matina · Jardim das Brincadeiras",c:"BR",cat:"Multidisciplinar",v:"Baixa de Santo António"},
+{day:18,h:"10:00",e:"17:00",t:"Endless Creativity",g:"Hugo Oliveira (oficina)",c:"PT",cat:"Oficina",v:"Teatro Aveirense – Sala Estúdio"},
+{day:18,h:"11:00",e:"15:00",t:"in do ~ histórias com o céu às costas",g:"Baileia · Jardim das Brincadeiras",c:"PT",cat:"Dança",v:"Baixa de Santo António"},
+{day:18,h:"12:00",e:"23:30",t:"Chefs on Fire",g:"",c:"",cat:"Multidisciplinar",v:"Parque Infante Dom Pedro"},
+{day:18,h:"14:30",e:"15:30",t:"Fanfarra dos Canais",g:"Oficina de Música de Aveiro e Comunidade",c:"PT",cat:"Música",v:"Cidade de Aveiro"},
+{day:18,h:"15:00",e:"16:00",t:"in do ~ histórias com o céu às costas",g:"Baileia · Jardim das Brincadeiras",c:"PT",cat:"Dança",v:"Baixa de Santo António"},
+{day:18,h:"15:00",e:"00:00",t:"Sala de eStar",g:"",c:"",cat:"Multidisciplinar",v:"Praça da República"},
+{day:18,h:"15:30",e:"16:30",t:"Tei tei",g:"Emiliano Alessi",c:"ES",cat:"Instalação / Performance",v:"Rua Dr. Nascimento Leitão"},
+{day:18,h:"16:00",e:"17:00",t:"Why Not?",g:"Piero Ricciardi",c:"IT",cat:"Circo Contemporâneo",v:"Cais dos Botirões"},
+{day:18,h:"16:30",e:"17:30",t:"Into Thin Air",g:"Panama Pictures",c:"NL",cat:"Multidisciplinar",v:"Largo do Alboi"},
+{day:18,h:"17:00",e:"18:00",t:"Karoli, o Homem da Roda",g:"Ramon Muñoz",c:"ES",cat:"Circo Contemporâneo",v:"Largo Dr. Jaime Magalhães Lima"},
+{day:18,h:"17:00",e:"",t:"Tropicália",g:"",c:"",cat:"Multidisciplinar",v:"Jardim do Museu Santa Joana"},
+{day:18,h:"17:30",e:"18:30",t:"Truth",g:"Ramshacklicious & Hijinx Theatre",c:"UK",cat:"Multidisciplinar",v:"Praça Dr. Joaquim Melo Freitas"},
+{day:18,h:"17:30",e:"18:30",t:"Fanfarra dos Canais",g:"Oficina de Música de Aveiro e Comunidade",c:"PT",cat:"Música",v:"Cidade de Aveiro"},
+{day:18,h:"17:45",e:"18:45",t:"Tei tei",g:"Emiliano Alessi",c:"ES",cat:"Instalação / Performance",v:"Rua Dr. Nascimento Leitão"},
+{day:18,h:"18:00",e:"19:00",t:"Why Not?",g:"Piero Ricciardi",c:"IT",cat:"Circo Contemporâneo",v:"Cais dos Botirões"},
+{day:18,h:"19:00",e:"20:00",t:"Truth",g:"Ramshacklicious & Hijinx Theatre",c:"UK",cat:"Multidisciplinar",v:"Praça Dr. Joaquim Melo Freitas"},
+{day:18,h:"19:30",e:"20:30",t:"Macacos do Chinês",g:"",c:"PT",cat:"Música",v:"Fábrica Ciência Viva de Aveiro (exterior)"},
+{day:18,h:"19:45",e:"20:45",t:"Gaïa",g:"Compagnie Bivouac",c:"FR",cat:"Circo Contemporâneo",v:"Largo Mercado Manuel Firmino"},
+{day:18,h:"21:00",e:"22:00",t:"Eirenê",g:"La Troupe Malabó",c:"ES",cat:"Circo Contemporâneo",v:"Largo de São Gonçalinho"},
+{day:18,h:"22:00",e:"23:30",t:"Tawa",g:"Cie Gratte Ciel + Comunidade",c:"FR",cat:"Multidisciplinar",v:"Percurso: Canal junto à Antiga Capitania → Cais da Fonte Nova",hl:1},
+/* ---- 19 ---- */
+{day:19,h:"10:00",e:"19:00",t:"Casa dos Seres da Terra",g:"Maria Matina · Jardim das Brincadeiras",c:"BR",cat:"Multidisciplinar",v:"Baixa de Santo António"},
+{day:19,h:"10:00",e:"18:30",t:"Lilliput – Fairy Tales",g:"Tomb Creatius e Carles Porta",c:"ES",cat:"Multidisciplinar",v:"Baixa de Santo António"},
+{day:19,h:"11:00",e:"15:00",t:"in do ~ histórias com o céu às costas",g:"Baileia · Jardim das Brincadeiras",c:"PT",cat:"Dança",v:"Baixa de Santo António"},
+{day:19,h:"12:00",e:"23:30",t:"Chefs on Fire",g:"",c:"",cat:"Multidisciplinar",v:"Parque Infante Dom Pedro"},
+{day:19,h:"14:30",e:"15:30",t:"Fanfarra dos Canais",g:"Oficina de Música de Aveiro e Comunidade",c:"PT",cat:"Música",v:"Cidade de Aveiro"},
+{day:19,h:"15:00",e:"00:00",t:"Sala de eStar",g:"",c:"",cat:"Multidisciplinar",v:"Praça da República"},
+{day:19,h:"15:00",e:"16:00",t:"in do ~ histórias com o céu às costas",g:"Baileia · Jardim das Brincadeiras",c:"PT",cat:"Dança",v:"Baixa de Santo António"},
+{day:19,h:"15:30",e:"16:30",t:"Tei tei",g:"Emiliano Alessi",c:"ES",cat:"Instalação / Performance",v:"Rua Dr. Nascimento Leitão"},
+{day:19,h:"17:00",e:"",t:"Tropicália",g:"",c:"",cat:"Multidisciplinar",v:"Jardim do Museu Santa Joana"},
+{day:19,h:"17:00",e:"18:00",t:"Karoli, o Homem da Roda",g:"Ramon Muñoz",c:"ES",cat:"Circo Contemporâneo",v:"Largo Dr. Jaime Magalhães Lima"},
+{day:19,h:"17:30",e:"18:30",t:"Fanfarra dos Canais",g:"Oficina de Música de Aveiro e Comunidade",c:"PT",cat:"Música",v:"Escadaria Atlas"},
+{day:19,h:"18:00",e:"19:00",t:"Tei tei",g:"Emiliano Alessi",c:"ES",cat:"Instalação / Performance",v:"Rua Dr. Nascimento Leitão"},
+{day:19,h:"19:00",e:"20:30",t:"Carminho",g:"",c:"PT",cat:"Música",v:"Cais da Fonte Nova",hl:1},
+];
+
+// Descrições (resumidas) por espetáculo — fonte: festivaldoscanais.pt
+const DESC = {
+"The Gift":"Banda portuguesa de regresso a Aveiro, a celebrar quase 30 anos de carreira com êxitos como “Ok! Do You Want Something Simple?” e “Fácil de Entender”. Um concerto intenso de uma das vozes mais singulares da música nacional.",
+"Carminho":"A fadista apresenta o sétimo álbum, “Eu vou Morrer de Amor ou Resistir”, onde explora o fado em todas as suas formas e o aproxima da música experimental.",
+"Amália na América, Além do Fado":"A Orquestra das Beiras, com Cristina Branco, Raquel Tavares e Ricardo Ribeiro, evoca a digressão de Amália pelos EUA nos anos 50 — do clube La Vie en Rose ao Carnegie Hall — entre fados tradicionais e canções portuguesas.",
+"Veles e Vents":"Espetáculo de rua com pirotecnia: um navio transforma-se de veleiro idílico em petroleiro, num retrato da crise ambiental e da fragilidade do oceano.",
+"Tawa":"Performance aérea inspirada em rituais e celebrações coletivas de culturas ancestrais — uma experiência sensorial feita de movimento, cor e respiração, ao longo do canal.",
+"Bonded":"Dança interpretada por irmãs gémeas sobre os laços familiares e como o tempo os transforma, num cenário circular de forte impacto visual.",
+"Casa dos Seres da Terra":"Espaço multigeracional no Jardim das Brincadeiras para pausar, criar e brincar, com Ninho de Histórias, zona de brincar livre e atelier de criação.",
+"Lilliput – Fairy Tales":"Instalação onde os contos de fadas ganham vida e o público pode entrar neles, revivê-los e recriá-los.",
+"Histórias de um Baú":"Dois artistas viajantes, Fidel e Capulita, com um velho baú às costas: malabarismo, humor e circo numa história envolvente.",
+"Sala de eStar":"A Praça da República transforma-se em sala de estar ao ar livre — ponto de encontro à tarde, clube à noite, sempre com música para dançar (15 jul: Marzia Bruno às 15h; Shanty Town Selektas DJ set às 22h).",
+"Tropicália":"O jardim do Museu de Santa Joana vira praia tropical, com bandas, DJ, bar de daiquiris, mobiliário de praia e areia (15 jul: Bobby Ital DJ set).",
+"Fanfarra dos Canais":"Projeto comunitário que leva às ruas e praças, com irreverência, releituras do cancioneiro tradicional de Aveiro.",
+"Le Bruit com Convidados":"Banda de Aveiro que cruza pós-rock, trip-hop e música instrumental alternativa; atuações imersivas, com convidados em palco, a preparar o álbum de estreia.",
+"Artilusio":"Teatro de objetos onde a lâmpada de As Mil e Uma Noites e viagens fantásticas despertam a imaginação dos mais novos (horários: 11h e 14h30).",
+"Mães Solteiras":"Projeto com André Henriques (Linda Martini), Joaquim Albergaria (PAUS), Pedro Cobrado e Ricardo Martins (Pop Dell’Arte); apresentam o álbum de estreia “Vamos ser breves”.",
+"Liberdade Liberdade":"Circo contemporâneo a partir das cartas de amor dos avós do acrobata David David — uma reflexão sobre revolução e festejo, sem palavras, com o corpo no centro.",
+"Chefs on Fire":"Pop-up gastronómico onde chefs cozinham em fogo lento, ao almoço e ao jantar, com concertos (17 jul: chefs Rita Magro, Aurora Goy, João Covas e Lidia Brás; música de André Henriques e Edmundo Inácio).",
+"Karoli, o Homem da Roda":"Circo catalão com malabarismo e monociclo, de monociclos altos a bicicletas em miniatura de 10, 20 e 30 cm.",
+"Why Not?":"Comédia que cruza circo, teatro físico, dança e música ao vivo (swing e rock’n’roll), entre humor e surpresa.",
+"Into Thin Air":"Três artistas presos numa escada inclinada flutuam no espaço, entre o quase-cair e o reequilíbrio; acrobacia e dança em altura.",
+"Truth":"Performance de rua, cómica e dadaísta, sobre liberdade e participação, com elenco inclusivo que integra intérpretes com deficiência intelectual.",
+"Rapaz Ego":"De regresso com o álbum “Fazer as Pazes”, o mais pop e experimental da carreira, acompanhado por banda completa.",
+"Gaïa":"Circo, dança, música e artes visuais sobre a relação entre o ser humano e o ambiente, num ecossistema frágil em mudança.",
+"Eirenê":"Circo num cenário de guerra: artistas tentam seguir a vida apesar das sirenes — uma história de resiliência e uma mensagem de paz, com humor.",
+"Endless Creativity":"Masterclass do projeto Logos sobre os princípios das artes performativas, inspirada nas tradições da comunidade aveirense. Inscrição obrigatória: agenio@cm-aveiro.pt.",
+"in do ~ histórias com o céu às costas":"Dança no limiar entre o visível e o invisível, que puxa fios de histórias escondidas e gera múltiplas narrativas (horários: 11h e 15h).",
+"Tei tei":"Performance itinerante de gesto, dança e manipulação de fitas, que transforma cada esquina e poste de luz da cidade numa narrativa única.",
+"Macacos do Chinês":"Fusão de português, crioulo e guitarra com grime e bass culture britânica; concerto a partir do EP “Bolos ao final da Noite”."
+};
+
+// ---- state ----
+const LS_FAV="fdc2026_favs";
+let favs = new Set(JSON.parse(localStorage.getItem(LS_FAV)||"[]"));
+const evId = e => `${e.day}|${e.h}|${e.t}|${e.v}`;
+let state = {day:15, cat:"all", q:"", favOnly:false};
+
+// pick the festival day matching today, else first day
+(function initDay(){
+  const today = new Date();
+  const m = today.getMonth()+1, dt = today.getDate(), y = today.getFullYear();
+  if(y===2026 && m===7 && dt>=15 && dt<=19) state.day = dt;
+})();
+
+const $ = s => document.querySelector(s);
+
+function buildDays(){
+  const today = new Date();
+  const isFestNow = today.getFullYear()===2026 && (today.getMonth()+1)===7;
+  $("#days").innerHTML = DAYS.map(d=>{
+    const t = isFestNow && today.getDate()===d.d ? " today":"";
+    return `<button class="day${d.d===state.day?' active':''}${t}" data-day="${d.d}">
+      <b>${d.d}</b><span>${d.dow}</span></button>`;
+  }).join("");
+  $("#days").querySelectorAll(".day").forEach(b=>b.onclick=()=>{state.day=+b.dataset.day; render();});
+}
+
+function buildChips(){
+  const cats = ["all", ...Object.keys(CATS)];
+  $("#chips").innerHTML = cats.map(c=>{
+    if(c==="all") return `<button class="chip${state.cat==='all'?' active':''}" data-cat="all">Tudo</button>`;
+    return `<button class="chip${state.cat===c?' active':''}" data-cat="${c}">
+      <span class="dot" style="background:${catColor(c)}"></span>${c}</button>`;
+  }).join("");
+  $("#chips").querySelectorAll(".chip").forEach(b=>b.onclick=()=>{
+    state.cat = b.dataset.cat; render();
+  });
+}
+
+function nowInfo(){
+  const n = new Date();
+  return {fest: n.getFullYear()===2026 && (n.getMonth()+1)===7 && n.getDate()>=15 && n.getDate()<=19,
+          day:n.getDate(), mins:n.getHours()*60+n.getMinutes()};
+}
+const toMin = hhmm => {const[a,b]=hhmm.split(":").map(Number); return a*60+b;};
+
+function mapsLink(v){
+  const q = encodeURIComponent(v.split("→").pop().split(":").pop().trim()+", Aveiro, Portugal");
+  return `https://www.google.com/maps/search/?api=1&query=${q}`;
+}
+
+function render(){
+  buildDays(); buildChips();
+  const day = DAYS.find(d=>d.d===state.day);
+  $("#daytitle").innerHTML = day.label;
+  const q = state.q.trim().toLowerCase();
+  const ni = nowInfo();
+
+  let items = EV.filter(e=>e.day===state.day)
+    .filter(e=>state.cat==="all"||e.cat===state.cat)
+    .filter(e=>!state.favOnly||favs.has(evId(e)))
+    .filter(e=>!q||(`${e.t} ${e.g} ${e.v} ${e.cat}`.toLowerCase().includes(q)))
+    .sort((a,b)=>toMin(a.h)-toMin(b.h));
+
+  $("#daytitle").innerHTML += ` <span class="count">${items.length} ${items.length===1?'evento':'eventos'}</span>`;
+
+  if(!items.length){
+    $("#list").innerHTML = `<div class="empty"><b>Nada por aqui</b>
+      ${state.favOnly?'Ainda não marcaste favoritos para este dia.':'Experimenta outro filtro ou outra pesquisa.'}</div>`;
+    return;
+  }
+
+  $("#list").innerHTML = `<div class="timeline">` + items.map((e,i)=>{
+    const id = evId(e), isFav = favs.has(id);
+    let now=false;
+    if(ni.fest && ni.day===e.day && e.e){
+      const s=toMin(e.h), en=toMin(e.e)<=s?toMin(e.e)+1440:toMin(e.e);
+      now = ni.mins>=s && ni.mins<=en;
+    }
+    const col = catColor(e.cat);
+    const hasDesc = !!DESC[e.t];
+    return `<div class="ev${now?' is-now':''}" style="animation-delay:${Math.min(i*30,300)}ms">
+      <div class="time">${e.h}${e.e?`<small>${e.e}</small>`:''}</div>
+      <div class="node" style="border-color:${now?'var(--coral)':col}"></div>
+      <div class="card tappable${hasDesc?' has-desc':''}" style="border-left-color:${col}" data-open="${id.replace(/"/g,'&quot;')}">
+        <div class="top">
+          <div>
+            <p class="title">${e.t}${e.c?`<span class="flag">${e.c}</span>`:''}${e.hl?`<span class="flag" style="background:var(--amber);color:var(--teal-900)">PALCO PRINCIPAL</span>`:''}</p>
+            ${e.g?`<p class="group">${e.g}</p>`:''}
+          </div>
+          <button class="star${isFav?' on':''}" data-id="${id.replace(/"/g,'&quot;')}" aria-label="Favorito">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6L12 2l2.9 6.6 7.1.6-5.4 4.8 1.6 7z"/></svg>
+          </button>
+        </div>
+        <div class="meta">
+          <span class="cat" style="color:${col}">${e.cat}</span>
+          <a class="venue" href="${mapsLink(e.v)}" target="_blank" rel="noopener">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            ${e.v}</a>
+          ${now?'<span class="badge-now">A DECORRER</span>':''}
+        </div>
+      </div>
+    </div>`;
+  }).join("") + `</div>`;
+
+  $("#list").querySelectorAll(".star").forEach(b=>b.onclick=(ev)=>{
+    ev.stopPropagation();
+    const id=b.dataset.id;
+    if(favs.has(id)) favs.delete(id); else favs.add(id);
+    localStorage.setItem(LS_FAV, JSON.stringify([...favs]));
+    render();
+  });
+  $("#list").querySelectorAll(".venue").forEach(a=>a.addEventListener("click",ev=>ev.stopPropagation()));
+  $("#list").querySelectorAll(".card[data-open]").forEach(c=>c.onclick=()=>openDetail(c.dataset.open));
+}
+
+function dayLabel(d){const x=DAYS.find(z=>z.d===d);return x?x.label:"";}
+
+function openDetail(id){
+  const e = EV.find(x=>evId(x)===id);
+  if(!e) return;
+  const col = catColor(e.cat);
+  const isFav = favs.has(id);
+  const when = `${dayLabel(e.day)} · ${e.h}${e.e?`–${e.e}`:""}`;
+  const desc = DESC[e.t];
+  $("#sheetBody").innerHTML = `
+    <p class="s-cat" style="color:${col}">${e.cat}${e.hl?' · Palco principal':''}</p>
+    <h2 id="sheetTitle">${e.t}${e.c?` <span class="flag" style="vertical-align:3px">${e.c}</span>`:''}</h2>
+    ${e.g?`<p class="s-group">${e.g}</p>`:''}
+    <div class="s-row"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>${when}</span></div>
+    <div class="s-row"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><a href="${mapsLink(e.v)}" target="_blank" rel="noopener">${e.v}</a></div>
+    ${desc?`<p class="s-desc">${desc}</p>`:`<p class="s-desc" style="color:#8a948f">Sem descrição disponível para este evento.</p>`}
+    <div class="s-actions">
+      <button class="s-btn fav${isFav?' on':''}" id="sheetFav">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="${isFav?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6L12 2l2.9 6.6 7.1.6-5.4 4.8 1.6 7z"/></svg>
+        ${isFav?'Nos favoritos':'Adicionar aos favoritos'}
+      </button>
+      <a class="s-btn primary" href="${mapsLink(e.v)}" target="_blank" rel="noopener">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Abrir mapa
+      </a>
+    </div>`;
+  $("#backdrop").hidden = false;
+  $("#sheet").hidden = false;
+  document.body.style.overflow = "hidden";
+  $("#sheetFav").onclick = ()=>{
+    if(favs.has(id)) favs.delete(id); else favs.add(id);
+    localStorage.setItem(LS_FAV, JSON.stringify([...favs]));
+    openDetail(id); render();
+  };
+}
+function closeDetail(){
+  $("#sheet").hidden = true;
+  $("#backdrop").hidden = true;
+  document.body.style.overflow = "";
+}
+$("#backdrop").onclick = closeDetail;
+$("#sheetClose").onclick = closeDetail;
+document.addEventListener("keydown", e=>{ if(e.key==="Escape" && !$("#sheet").hidden) closeDetail(); });
+
+$("#search").oninput = e=>{state.q=e.target.value; render();};
+$("#favbtn").onclick = ()=>{
+  state.favOnly=!state.favOnly;
+  $("#favbtn").classList.toggle("on",state.favOnly);
+  $("#favbtn").setAttribute("aria-pressed",state.favOnly);
+  render();
+};
+
+render();
+// refresca o estado "a decorrer" a cada minuto
+setInterval(render, 60000);
+</script>
+</body>
+</html>
